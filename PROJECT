@@ -1,0 +1,7 @@
+domain: wangjl.dev
+repo: autopatch
+resources:
+- group: sre
+  kind: Patch
+  version: v1
+version: "2"
