@@ -9,6 +9,8 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
+
+	libjq "github.com/snowcrystall/jq-go"
 )
 
 // +kubebuilder:webhook:path=/wangjl-autopatch-pod,mutating=true,failurePolicy=fail,groups="",resources=pods,verbs=create;update,versions=v1,name=auto-patch
@@ -59,7 +61,14 @@ func (a *podAnnotator) Handle(ctx context.Context, req admission.Request) admiss
 		return admission.Errored(http.StatusInternalServerError, err)
 	}
 
-	return admission.PatchResponseFromRaw(req.Object.Raw, marshaledPod)
+	marshaledPod2, err := libjq.Apply(".annotations['patch_engine']='jq'", marshaledPod)
+	fmt.Printf("modifiedby new pod2: %s\n", marshaledPod2[0])
+	if err != nil {
+		return admission.Errored(http.StatusInternalServerError, err)
+	}
+
+	//return admission.PatchResponseFromRaw(req.Object.Raw, marshaledPod)
+	return admission.PatchResponseFromRaw(req.Object.Raw, marshaledPod2[0])
 }
 
 func (a *podAnnotator) InjectDecoder(d *admission.Decoder) error {
