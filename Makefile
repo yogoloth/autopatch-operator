@@ -85,10 +85,13 @@ else
 CONTROLLER_GEN=$(shell which controller-gen)
 endif
 
-libjq:
+prepare: 
 	git submodule update --init
 	(cd modules/jq; git checkout jq-1.6 )
 	(cd modules/jq; git submodule update --init)
+	make libjq
+
+libjq:
 	(cd modules/jq; autoreconf -if )
 	(cd modules/jq; ./configure CFLAGS=-fPIC --disable-maintainer-mode --enable-all-static \
 	    --disable-shared --disable-docs --disable-valgrind --with-oniguruma=builtin -prefix=$(shell pwd)/modules)
