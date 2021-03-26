@@ -6,4 +6,4 @@ metadata:
     run: wangjl-test3
 steps:
     - engine: jq
-      patch: ".spec.containers[0].env+={name: \"REQUEST_MEM\",valueFrom:{resourceFieldRef:{containerName: .spec.containers[0].name, divisor: 0,resource: \"requests.memory\"}}}"
+      patch: ".spec.containers[0].env|={name: \"REQUEST_MEM\",valueFrom:{resourceFieldRef:{containerName: .spec.containers[0].name, divisor: 0,resource: \"requests.memory\"}}}"
