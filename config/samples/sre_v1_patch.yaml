@@ -1,9 +1,12 @@
 apiVersion: sre.wangjl.dev/v1
 kind: Patch
 metadata:
-  name: patch-common
+  name: patch-test
   labels:
     run: wangjl-test3
 steps:
     - engine: jq
-      patch: ".spec.containers[0].env|={name: \"REQUEST_MEM\",valueFrom:{resourceFieldRef:{containerName: .spec.containers[0].name, divisor: 0,resource: \"requests.memory\"}}}"
+      patch: ".spec.containers[0].env[.spec.containers[0].env|length]={name: \"REQUEST_MEM\",valueFrom:{resourceFieldRef:{containerName: .spec.containers[0].name, divisor: 0,resource: \"requests.memory\"}}}"
+    - engine: jq
+      patch: ".spec.containers[0].resources.requests={cpu: \"100m\",memory: \"1Gi\"}"
+
