@@ -24,8 +24,8 @@ type podAnnotator struct {
 	decoder *admission.Decoder
 }
 
-func patchPod(patch *srev1.Patch, pod *corev1.Pod) error {
-	marshaledPod, err := libjq.Apply(patch.Spec.JqPatch, pod)
+func patchPod(patch string, pod *corev1.Pod) error {
+	marshaledPod, err := libjq.Apply(patch, pod)
 	fmt.Printf("modifiedby new pod json: %s\n", marshaledPod)
 	if err != nil {
 		return err
@@ -58,9 +58,12 @@ func (a *podAnnotator) Handle(ctx context.Context, req admission.Request) admiss
 		if err := a.Client.List(ctx, &patchList, client.MatchingLabels{k: v}); err == nil {
 			fmt.Printf("found patch with label: %s=%s\n", k, v)
 			for _, patch := range patchList.Items {
-				pod.Annotations["autopatched-by"] = patch.Name
-				if err := patchPod(&patch, pod); err != nil {
-					return admission.Errored(http.StatusInternalServerError, err)
+				pod.Annotations["patched-by-"+patch.Name] = "true"
+				for _, patch_step := range patch.Steps {
+					if err := patchPod(patch_step.Patch, pod); err != nil {
+						return admission.Errored(http.StatusInternalServerError, err)
+					}
+
 				}
 			}
 		} else {

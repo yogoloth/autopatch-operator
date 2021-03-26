@@ -1,7 +1,9 @@
 apiVersion: sre.wangjl.dev/v1
 kind: Patch
 metadata:
-  name: patch-sample
-spec:
-  # Add fields here
-  foo: bar
+  name: patch-common
+  labels:
+    run: wangjl-test3
+steps:
+    - engine: jq
+      patch: ".spec.containers[0].env+={name: \"REQUEST_MEM\",valueFrom:{resourceFieldRef:{containerName: .spec.containers[0].name, divisor: 0,resource: \"requests.memory\"}}}"

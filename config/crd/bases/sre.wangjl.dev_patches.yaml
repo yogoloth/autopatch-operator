@@ -31,19 +31,22 @@ spec:
           type: string
         metadata:
           type: object
-        spec:
-          description: PatchSpec defines the desired state of Patch
-          properties:
-            jq_patch:
-              description: Foo is an example field of Patch. Edit Patch_types.go to
-                remove/update
-              type: string
-            patch_type:
-              type: string
-          type: object
         status:
           description: PatchStatus defines the observed state of Patch
           type: object
+        steps:
+          items:
+            properties:
+              engine:
+                type: string
+              patch:
+                description: Foo is an example field of Patch. Edit Patch_types.go
+                  to remove/update
+                type: string
+            type: object
+          type: array
+      required:
+      - steps
       type: object
   version: v1
   versions:

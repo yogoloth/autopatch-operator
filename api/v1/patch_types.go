@@ -29,15 +29,14 @@ import (
 //	pod      corev1.Pod
 //}
 
-// PatchSpec defines the desired state of Patch
-type PatchSpec struct {
+type Step struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	PatchType string `json:"patch_type,omitempty"`
+	Engine string `json:"engine,omitempty"`
 
 	// Foo is an example field of Patch. Edit Patch_types.go to remove/update
-	JqPatch string `json:"jq_patch,omitempty"`
+	Patch string `json:"patch,omitempty"`
 }
 
 // PatchStatus defines the observed state of Patch
@@ -53,7 +52,7 @@ type Patch struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   PatchSpec   `json:"spec,omitempty"`
+	Steps  []Step      `json:"steps"`
 	Status PatchStatus `json:"status,omitempty"`
 }
 
