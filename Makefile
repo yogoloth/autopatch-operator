@@ -12,6 +12,7 @@ GOBIN=$(shell go env GOBIN)
 endif
 
 LIBJQ=--gcflags '-I ./modules/include ' --ldflags '-linkmode external -extldflags "-Wl,-Bstatic  -L ./modules/lib -ljq -lonig -Wl,-Bdynamic -lm -lc"'
+#LIBJQ=--gcflags '-I ./modules/include ' --ldflags '-linkmode external -extldflags "-Wl,-Bstatic  -L ./modules/lib -ljq -lonig -lm -lc"'
 
 all: manager
 

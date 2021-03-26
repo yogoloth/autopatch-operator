@@ -34,9 +34,11 @@ spec:
         spec:
           description: PatchSpec defines the desired state of Patch
           properties:
-            foo:
+            jq_patch:
               description: Foo is an example field of Patch. Edit Patch_types.go to
                 remove/update
+              type: string
+            patch_type:
               type: string
           type: object
         status:
