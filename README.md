@@ -14,6 +14,8 @@ make deploy IMG=<some-registry>/<project-name>:tag
 # create a patch apply to pod with label "run: wangjl-test3"
 
 kubectl apply -f config/samples/sre_v1_patch.yaml
+
+# can try patches with gq(https://github.com/yogoloth/gq) on pod yaml
 ````
 ## 1.4 create a pod with label
 ````
